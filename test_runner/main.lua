@@ -44,6 +44,15 @@ function testBasicPass()
     lu.assertEquals(1,1)
 end
 
+function testUnusedIDIsNotAlive()
+	lu.assertFalse(isAlive(packEntityId(curr_ent_seq+1, 0)))
+	lu.assertFalse(isAlive(packEntityId(curr_ent_seq+1, 1)))
+	lu.assertFalse(isAlive(packEntityId(curr_ent_seq+1, 2)))
+	lu.assertFalse(isAlive(packEntityId(curr_ent_seq+1, 3)))
+	lu.assertFalse(isAlive(packEntityId(curr_ent_seq+1, 4)))
+	lu.assertFalse(isAlive(packEntityId(curr_ent_seq+1, 5)))
+end
+
 function testSingleEntityLiveness()
 	local ent_id = createEntity()
 	lu.assertTrue(isAlive(ent_id))
