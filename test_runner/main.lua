@@ -1,5 +1,6 @@
 lu = require('lib.luaunit.luaunit')
 require('Entity')
+require('Component')
 
 function testBasicPass()
     lu.assertEquals(1,1)
@@ -57,6 +58,30 @@ function testEntityReuse()
 	local id2, gen2 = unpackEntityId(ent_id2)
 	lu.assertEquals(id, id2)
 	lu.assertEquals(gen+1, gen2)
+end
+
+function testAssignDefaultPositionToEntity()
+	local ent_id = createEntity()
+	addComponentToEntity(ent_id, "Position")
+	for eid, _ in getAllEntitiesWithComponent("Position") do
+		if eid == ent_id then
+			return
+		end
+	end
+	lu.fail("eid not found")
+end
+
+function testAssignPositionToEntity()
+	local ent_id = createEntity()
+	addComponentToEntity(ent_id, "Position", {x = 3, y = 4})
+	for eid, data in getAllEntitiesWithComponent("Position") do
+		if eid == ent_id then
+			lu.assertEquals(3, data["x"])
+			lu.assertEquals(4, data["y"])
+			return
+		end
+	end
+	lu.fail("eid not found")
 end
 
 -- We have to have at least one command line argument for test discovery to work, because of how love2d invokes lua.
